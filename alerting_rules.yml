@@ -1,0 +1,29 @@
+# for kubectl edit configmap -n binderhub-test-001 prometheus-0001-server
+
+  alerting_rules.yml: |
+    groups:
+      - name: node_exporter
+        rules:
+        - alert: memory_used
+          expr: 100 * (1 - node_memory_MemFree_bytes / node_memory_MemTotal_bytes)  > 90
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "node {{ $labels.kubernetes_node }} used over 90%"
+        - alert: cpu_used
+          expr: 100 - (avg by (instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 90
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "node {{ $labels.kubernetes_node }} used over 90%"
+            description: "node of {{ $labels.kubernetes_node }} has been used over 90% for more than 5 minutes."
+        - alert: file_system_used
+          expr: 100 * (1 - node_filesystem_avail_bytes / node_filesystem_size_bytes)  > 10
+          for: 1m
+          labels:
+            severity: critical
+          annotations:
+            summary: "node {{ $labels.kubernetes_node }} used over 90%"
+            description: "node of {{ $labels.kubernetes_node }} has been used over 90% for more than 5 minutes."
