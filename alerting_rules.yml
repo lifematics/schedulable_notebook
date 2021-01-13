@@ -10,20 +10,21 @@
           labels:
             severity: critical
           annotations:
-            summary: "node {{ $labels.kubernetes_node }} used over 90%"
+            summary: "node {{ $labels.kubernetes_node }} used over 90% memory"
+            description: "node of {{ $labels.kubernetes_node }} has been used over 90% memory for more than 5 minutes."
         - alert: cpu_used
           expr: 100 - (avg by (instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 90
           for: 5m
           labels:
             severity: critical
           annotations:
-            summary: "node {{ $labels.kubernetes_node }} used over 90%"
-            description: "node of {{ $labels.kubernetes_node }} has been used over 90% for more than 5 minutes."
+            summary: "node {{ $labels.kubernetes_node }} used over 90% cpu"
+            description: "node of {{ $labels.kubernetes_node }} has been used over 90% cpu for more than 5 minutes."
         - alert: file_system_used
-          expr: 100 * (1 - node_filesystem_avail_bytes / node_filesystem_size_bytes)  > 10
+          expr: 100 * (1 - node_filesystem_avail_bytes / node_filesystem_size_bytes)  > 90
           for: 1m
           labels:
             severity: critical
           annotations:
-            summary: "node {{ $labels.kubernetes_node }} used over 90%"
-            description: "node of {{ $labels.kubernetes_node }} has been used over 90% for more than 5 minutes."
+            summary: "node {{ $labels.kubernetes_node }} used over 90% storage"
+            description: "node of {{ $labels.kubernetes_node }} has been used over 90% storage."
