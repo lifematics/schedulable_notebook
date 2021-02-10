@@ -31,6 +31,7 @@ RUN cd /usr/local/sbin/ && \
     rm chromedriver_linux64.zip
 
 RUN pip --no-cache-dir install selenium
+RUN pip --no-cache-dir install prometheus-api-client
 
 # AWSCLI
 RUN conda install --quiet --yes awscli passlib && conda clean --all -f -y
@@ -52,6 +53,10 @@ RUN mv /opt/conda/bin/jupyterhub-singleuser /opt/conda/bin/_jupyterhub-singleuse
 # Configuration for Server Proxy
 RUN cat /tmp/resource/conf/jupyter_notebook_config.py >> $CONDA_DIR/etc/jupyter/jupyter_notebook_config.py
 RUN chown $NB_USER /tmp/resource/*.ipynb
+RUN chown -R $NB_USER /tmp/resource/jenkins-configs/*
+RUN mkdir -p /home/$NB_USER/.jenkins/jobs/
+RUN chown -R $NB_USER /home/$NB_USER/.jenkins/jobs/
+RUN pip --no-cache-dir install ipynb
 
 USER $NB_USER
 
@@ -60,4 +65,5 @@ RUN rm /home/$NB_USER/*.ipynb /home/$NB_USER/*.md && \
     rm -fr /home/$NB_USER/images /home/$NB_USER/resources && \
     cp /tmp/resource/*.md /home/$NB_USER/ && \
     cp /tmp/resource/*.ipynb /home/$NB_USER/ && \
-    cp -fr /tmp/resource/images /home/$NB_USER/
+    cp -fr /tmp/resource/images /home/$NB_USER/ && \
+    cp -fr /tmp/resource/jenkins-configs/* /home/$NB_USER/.jenkins/jobs/
