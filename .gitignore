@@ -2,6 +2,7 @@
 jenkins-workspace
 .jenkins
 .vim*
+geckodriver.log 
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
