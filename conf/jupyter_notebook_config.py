@@ -1,5 +1,5 @@
 # Jenkins
-import tempfile
+import tempfile, os
 
 def _run_jenkins_proxy(port):
     conf = tempfile.NamedTemporaryFile(mode='w', delete=False)
@@ -23,3 +23,10 @@ c.ServerProxy.servers = {
     'timeout': 30,
   }
 }
+
+hub_prefix = os.environ.get('JUPYTERHUB_SERVICE_PREFIX', None)
+if hub_prefix is not None:
+  # If this server is working under jupyterhub, we can omit authentication
+  c.NotebookApp.token = ''
+  c.NotebookApp.password = ''
+  c.NotebookApp.base_url = hub_prefix
