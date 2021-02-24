@@ -23,9 +23,10 @@ RUN sh -c 'wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | 
     && rm -rf /var/lib/apt/lists/*
 
 # ChromeDriver
-ENV CHROMEDRIVER_VERSION=85.0.4183.87
-RUN cd /usr/local/sbin/ && \
-    wget https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip && \
+RUN CHROME_VERSION=$(google-chrome --product-version | grep -o "[^\.]*\.[^\.]*\.[^\.]*") && \
+    DRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION") && \
+    cd /usr/local/sbin/ && \
+    wget https://chromedriver.storage.googleapis.com/${DRIVER_VERSION}/chromedriver_linux64.zip && \
     unzip chromedriver_linux64.zip && \
     chmod +x chromedriver && \
     rm chromedriver_linux64.zip
