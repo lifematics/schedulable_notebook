@@ -24,9 +24,4 @@ c.ServerProxy.servers = {
   }
 }
 
-hub_prefix = os.environ.get('JUPYTERHUB_SERVICE_PREFIX', None)
-if hub_prefix is not None:
-  # If this server is working under jupyterhub, we can omit authentication
-  c.NotebookApp.token = ''
-  c.NotebookApp.password = ''
-  c.NotebookApp.base_url = hub_prefix
+

@@ -56,7 +56,7 @@ RUN cat /tmp/resource/conf/jupyter_notebook_config.py >> $CONDA_DIR/etc/jupyter/
 RUN chown $NB_USER /tmp/resource/*.ipynb
 RUN chown -R $NB_USER /tmp/resource/jenkins-configs/*
 RUN mkdir -p /home/$NB_USER/.jenkins/jobs/
-RUN chown -R $NB_USER /home/$NB_USER/.jenkins/jobs/
+RUN chown -R $NB_USER /home/$NB_USER/.jenkins
 RUN pip --no-cache-dir install ipynb
 
 USER $NB_USER
@@ -68,3 +68,5 @@ RUN rm /home/$NB_USER/*.ipynb /home/$NB_USER/*.md && \
     cp /tmp/resource/*.ipynb /home/$NB_USER/ && \
     cp -fr /tmp/resource/images /home/$NB_USER/ && \
     cp -fr /tmp/resource/jenkins-configs/* /home/$NB_USER/.jenkins/jobs/
+
+CMD jupyterhub-singleuser
