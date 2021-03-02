@@ -68,5 +68,3 @@ RUN rm /home/$NB_USER/*.ipynb /home/$NB_USER/*.md && \
     cp /tmp/resource/*.ipynb /home/$NB_USER/ && \
     cp -fr /tmp/resource/images /home/$NB_USER/ && \
     cp -fr /tmp/resource/jenkins-configs/* /home/$NB_USER/.jenkins/jobs/
-
-CMD jupyterhub-singleuser

@@ -24,4 +24,8 @@ c.ServerProxy.servers = {
   }
 }
 
-
+ 
+c.NotebookApp.password = os.environ.get('NOTEBOOK_PASSWORD', '')
+hub_prefix = os.environ.get('JUPYTERHUB_SERVICE_PREFIX', None)
+if hub_prefix is not None:
+  c.NotebookApp.base_url = hub_prefix
