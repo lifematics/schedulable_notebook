@@ -57,7 +57,7 @@ RUN chown $NB_USER /tmp/resource/*.ipynb
 RUN chown -R $NB_USER /tmp/resource/jenkins-configs/*
 RUN mkdir -p /home/$NB_USER/.jenkins/jobs/
 RUN chown -R $NB_USER /home/$NB_USER/.jenkins
-RUN pip --no-cache-dir install ipynb
+RUN pip --no-cache-dir install ipynb slack-sdk
 
 USER $NB_USER
 
