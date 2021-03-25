@@ -37,6 +37,22 @@ RUN pip --no-cache-dir install prometheus-api-client
 # AWSCLI
 RUN conda install --quiet --yes awscli passlib && conda clean --all -f -y
 
+# kubectl
+RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && \
+    mv kubectl /usr/local/bin/ && \
+    chmod a+x /usr/local/bin/kubectl
+
+# gsutil
+RUN wget https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-327.0.0-linux-x86_64.tar.gz \
+    -O /tmp/google-cloud-sdk.tar.gz | bash
+
+RUN mkdir -p /usr/local/gcloud \
+    && tar -C /usr/local/gcloud -xvzf /tmp/google-cloud-sdk.tar.gz \
+    && /usr/local/gcloud/google-cloud-sdk/install.sh -q \
+    && chown -R $NB_USER /home/jovyan/.config/gcloud
+
+ENV PATH $PATH:/usr/local/gcloud/google-cloud-sdk/bin
+
 COPY . /tmp/resource
 
 # Scripts for Jenkins/Supervisor
