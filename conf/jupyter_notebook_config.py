@@ -3,6 +3,7 @@ import tempfile, os
 
 def _run_jenkins_proxy(port):
     conf = tempfile.NamedTemporaryFile(mode='w', delete=False)
+    proto = os.environ.get('FORWARDED_PROTOCOL', "http")
     conf.write('''
 LogLevel Warning
 MaxClients 5
@@ -11,6 +12,7 @@ MaxSpareServers 20
 StartServers 10
 Port {port}
 ReverseOnly Yes
+AddHeader "X-Forwarded-Proto" "{proto}"
 Upstream http localhost:8080
 '''.format(port=port))
     conf.close()
